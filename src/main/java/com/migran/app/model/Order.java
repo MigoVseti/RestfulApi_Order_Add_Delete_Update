@@ -1,6 +1,7 @@
 package com.migran.app.model;
 
 import com.migran.app.enums.Status;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -17,20 +18,29 @@ import java.util.Objects;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Schema(description = "Уникальный номер зкаказа", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
 
     @NotEmpty
+    @Schema(description = "Название продукта", example = "Хлеб")
     private String product;
 
     @Positive
     @Min(value = 0, message = "Quantity < 0")
+    @Schema(description = "Количество продукта", example = "10")
     private int quantity;
 
     @Positive
     @Min(value = 1, message = "Price < 1")
+    @Schema(description = "Стоимость продукта", example = "50")
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
+    @Schema(description = "Статус заказа", allowableValues = {
+            "CREATED",
+            "SHIPPED",
+            "DELIVERED"
+    })
     private Status status;
 
     public Order(Long id, String product, int quantity, BigDecimal price, Status status) {
